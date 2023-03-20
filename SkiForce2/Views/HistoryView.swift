@@ -1,27 +1,50 @@
 //
-//  ContentView.swift
+//  HistoryView.swift
 //  SkiForce2
 //
-//  Created by Joachim Mjelde on 3/2/23.
+//  Created by Joachim Mjelde on 3/3/23.
 //
 
 import SwiftUI
-import CoreData
 
-struct ContentView: View {
+struct HistoryView: View {
     @Environment(\.managedObjectContext) private var viewContext
 
     @FetchRequest(
-        sortDescriptors: [NSSortDescriptor(keyPath: \Item.timestamp, ascending: true)],
+        sortDescriptors: [NSSortDescriptor(keyPath: \Item.timestamp, ascending: false)],
         animation: .default)
     private var items: FetchedResults<Item>
 
+    
     var body: some View {
+        
+        
         NavigationView {
+            
             List {
                 ForEach(items) { item in
                     NavigationLink {
-                        Text("Item at \(item.timestamp!, formatter: itemFormatter)")
+                        
+                        SavedRunView(item: item)
+                            .navigationBarTitleDisplayMode(.inline)
+                            .toolbar { // <2>
+                                ToolbarItem(placement: .principal) { // <3>
+                                    VStack {
+                                        HStack{
+                                            Text(item.name!).font(.headline)
+                                            Image(systemName: "figure.skiing.downhill")
+                                        }
+                                        Text(item.timestamp!, formatter: itemFormatter).font(.subheadline)
+                                    }
+                                }
+                            }
+                    
+                    
+                
+            
+                        
+//                        Text("Item at \(item.timestamp!, formatter: itemFormatter)")
+//
                     } label: {
                         Text(item.timestamp!, formatter: itemFormatter)
                     }
@@ -32,14 +55,11 @@ struct ContentView: View {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     EditButton()
                 }
-                ToolbarItem {
-                    Button(action: addItem) {
-                        Label("Add Item", systemImage: "plus")
-                    }
-                }
+
             }
+            .navigationTitle("Select an Item")
             Text("Select an item")
-        }
+        }.accentColor(.black)
     }
 
     private func addItem() {
@@ -81,8 +101,9 @@ private let itemFormatter: DateFormatter = {
     return formatter
 }()
 
-struct ContentView_Previews: PreviewProvider {
+
+struct HistoryView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView().environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+        HistoryView().environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
     }
 }
