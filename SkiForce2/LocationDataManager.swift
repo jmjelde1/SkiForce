@@ -40,6 +40,10 @@ class LocationDataManager : NSObject, ObservableObject, CLLocationManagerDelegat
     var turns: Int16 = 0
     var motionY: [Double] = []
     
+    var longestAirtime: Double = 0.0
+    var sumAirtime: Double = 0.0
+    var numOfJumps: Int16 = 0
+    
     
     override init() {
         super.init()
@@ -59,19 +63,19 @@ class LocationDataManager : NSObject, ObservableObject, CLLocationManagerDelegat
             self.speedStartTime = Date().toSeconds()
             self.speedFirstTime = false
         }
-//        if (Date().toSeconds() - self.speedStartTime > 5){
+        if (Date().toSeconds() - self.speedStartTime > 5){
             
             self.speeds.append(first.speed)
             self.altitudes.append(first.altitude)
-        print(first.coordinate.latitude)
+        
+                
+            self.latitudeArray.append(first.coordinate.latitude)
+            self.longitudeArray.append(first.coordinate.longitude)
             
-        self.latitudeArray.append(first.coordinate.latitude)
-        self.longitudeArray.append(first.coordinate.longitude)
-        
-        
-//            self.speedTime.append(Date().toSeconds() - self.speedStartTime - 5)
-        self.speedTime.append(Date().toSeconds() - self.speedStartTime)
-//        }
+            
+            self.speedTime.append(Date().toSeconds() - self.speedStartTime - 5)
+//        self.speedTime.append(Date().toSeconds() - self.speedStartTime)
+        }
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
@@ -99,6 +103,18 @@ class LocationDataManager : NSObject, ObservableObject, CLLocationManagerDelegat
         }
         averageSpeed = vDSP.mean(speeds)
         maxSpeed = speeds.max() ?? 0
+        
+//        delete last few seconds
+//        look at updateInterval to see how much time is deleted
+        motion = motion.dropLast(80)
+        motionY = motionY.dropLast(80)
+        motionTime = motionTime.dropLast(80)
+        
+        
+        let airtimes = airtime(motionY: motionY, motionTime: motionTime)
+        longestAirtime = airtimes.max() ?? -1
+        sumAirtime = airtimes.reduce(0, +)
+        numOfJumps = Int16(airtimes.count)
     }
     
     func clearAllData() {
@@ -116,10 +132,14 @@ class LocationDataManager : NSObject, ObservableObject, CLLocationManagerDelegat
         
         motion.removeAll()
         motionTime.removeAll()
+        motionY.removeAll()
         maxGForce = 0
         motionFirstTime = true
         motionStartTime = 0.0
         turns = 0
+        longestAirtime = 0.0
+        sumAirtime = 0.0
+        numOfJumps = 0
     }
     
     func startUpdatingMotion(){
@@ -131,13 +151,13 @@ class LocationDataManager : NSObject, ObservableObject, CLLocationManagerDelegat
                     self.motionFirstTime = false
                 }
                 
-//                if (trueData.timestamp-self.motionStartTime > 5){
+                if (trueData.timestamp-self.motionStartTime > 5){
                                         
                     self.motion.append(trueData.acceleration.x)
-                self.motionY.append(trueData.acceleration.y)
-                self.motionTime.append(trueData.timestamp - self.motionStartTime)
-//                    self.motionTime.append(trueData.timestamp - self.motionStartTime - 5)
-//                }
+                    self.motionY.append(trueData.acceleration.y)
+//                    self.motionTime.append(trueData.timestamp - self.motionStartTime)
+                    self.motionTime.append(trueData.timestamp - self.motionStartTime - 5)
+                }
             }
             self.maxGForce = Double(self.motion.map(abs).max() ?? -1)
         }
@@ -164,6 +184,31 @@ class LocationDataManager : NSObject, ObservableObject, CLLocationManagerDelegat
             }
         }
         return Int16(turns)
+    }
+    
+    func airtime(motionY: [Double], motionTime: [Double]) -> [Double] {
+        var airtime: [Double] = []
+        var inAir = false
+        var hasTakenOff = false
+        var startTime = 0.0
+        var stopTime = 0.0
+        
+        for index in 0...motionY.count-2{
+            if (motionY[index] < 0.11 && motionY[index] > -0.11) && (motionY[index+1] < 0.11 && motionY[index+1] > -0.11) {
+                inAir = true
+                hasTakenOff = true
+                startTime = motionTime[index]
+            } else {
+                inAir = false
+            }
+            if !inAir && hasTakenOff{
+                hasTakenOff = false
+                stopTime = motionTime[index+1]
+                airtime.append(stopTime-startTime)
+            }
+        }
+        
+        return airtime
     }
 }
 

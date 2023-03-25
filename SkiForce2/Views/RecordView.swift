@@ -79,12 +79,15 @@ struct SpeedAndMotionData: Identifiable {
     let motionTimeArray: [Double]
     let maxGForce: Double
     let turns: Int16
+    let longestAirtime: Double
+    let sumAirtime: Double
+    let numOfJumps: Int16
 }
 
 func getSpeedAndMotionData(_ locationManager: LocationDataManager) -> SpeedAndMotionData{
 
 
-    let speedAndMotion = SpeedAndMotionData(speedArray: locationManager.speeds, speedTimeArray: locationManager.speedTime, altitudeDifference: locationManager.altitudeDifference, averageSpeed: locationManager.averageSpeed, maxSpeed: locationManager.maxSpeed, latitudeArray: locationManager.latitudeArray, longitudeArray: locationManager.longitudeArray, minAltitude: locationManager.minAltitude, maxAltitude: locationManager.maxAltitude, motionYArray: locationManager.motionY, motionArray: locationManager.motion, motionTimeArray: locationManager.motionTime, maxGForce: locationManager.maxGForce, turns: locationManager.turns)
+    let speedAndMotion = SpeedAndMotionData(speedArray: locationManager.speeds, speedTimeArray: locationManager.speedTime, altitudeDifference: locationManager.altitudeDifference, averageSpeed: locationManager.averageSpeed, maxSpeed: locationManager.maxSpeed, latitudeArray: locationManager.latitudeArray, longitudeArray: locationManager.longitudeArray, minAltitude: locationManager.minAltitude, maxAltitude: locationManager.maxAltitude, motionYArray: locationManager.motionY, motionArray: locationManager.motion, motionTimeArray: locationManager.motionTime, maxGForce: locationManager.maxGForce, turns: locationManager.turns, longestAirtime: locationManager.longestAirtime, sumAirtime: locationManager.sumAirtime, numOfJumps: locationManager.numOfJumps)
     
     locationManager.clearAllData()
     

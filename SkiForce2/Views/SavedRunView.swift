@@ -96,8 +96,8 @@ struct GraphView: View{
         let motionYArray = makeMotionYArray(model: item)
         //        NavigationView(){
         
-        var speed_values = makeArrayFromMotionArray(arr: speeds, xValue: false)
-        var speed_time_values = makeStringArray(arr: speeds)
+        let speed_values = makeArrayFromMotionArray(arr: speeds)
+        let speed_time_values = makeStringArray(arr: speeds)
         
         VStack{
           
@@ -171,6 +171,7 @@ struct GraphView: View{
                     }.interpolationMethod(.catmullRom)
                 }
                 .padding()
+                .foregroundStyle(.red)
             }
             
             
@@ -182,6 +183,7 @@ struct GraphView: View{
                             y: .value("Speed", motion.y_value))
                     }.interpolationMethod(.catmullRom)
                 }
+                .foregroundStyle(.red)
             }
             
             
@@ -225,7 +227,7 @@ struct StatsView: View {
                             .foregroundColor(Color.blue)
                         Text("Average Speed")
                     }.padding()
-                }.padding(.bottom, 30)
+                }.padding(.bottom, 20)
                 
                 HStack{
                     Image(systemName: "mountain.2")
@@ -259,7 +261,7 @@ struct StatsView: View {
                             .foregroundColor(Color.blue)
                         Text("Difference")
                     }
-                }.padding(.bottom, 30)
+                }.padding(.bottom, 20)
                 
                 HStack{
                     Image(systemName: "figure.skiing.downhill")
@@ -287,7 +289,7 @@ struct StatsView: View {
                             .foregroundColor(Color.blue)
                         Text("Max G-Force")
                     }.padding()
-                }.padding(.bottom, 30)
+                }.padding(.bottom, 20)
             }
             
         
@@ -304,9 +306,26 @@ struct StatsView: View {
                     .frame(width: UIScreen.main.bounds.width - 40, height: 4)
                     .overlay(.blue)
                 
-                Text("Work in progress")
-                    .bold()
-                    .foregroundColor(Color.red)
+                HStack{
+                    VStack{
+                        Text("\(item.longestAirtime, specifier: "%.2f")")
+                            .bold()
+                            .foregroundColor(Color.blue)
+                        Text("Logest Air Time")
+                    }.padding()
+                    VStack{
+                        Text("\(item.sumAirtime, specifier: "%.2f")")
+                            .bold()
+                            .foregroundColor(Color.blue)
+                        Text("Sum Air Time")
+                    }.padding()
+                    VStack{
+                        Text("\(item.numOfJumps)")
+                            .bold()
+                            .foregroundColor(Color.blue)
+                        Text("Number of Jumps")
+                    }.padding()
+                }
                 
                 Spacer()
             }
@@ -372,7 +391,7 @@ func makeMotionYArray(model: Item) -> [Motion]{
     return array
 }
 
-func makeArrayFromMotionArray(arr: [Motion], xValue: Bool) -> [Double]{
+func makeArrayFromMotionArray(arr: [Motion]) -> [Double]{
     
     var new_arr: [Double] = []
     

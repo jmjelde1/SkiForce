@@ -24,14 +24,22 @@ struct CurrentDataView: View {
     @State private var showingAlertSave = false
     @State private var showingAlertClose = false
     @State private var name = ""
+    @State private var showSelectionBar = false
+    @State private var offsetX = 0.0
+    @State private var offsetY = 0.0
+    @State private var selectedSpeed = 0.0
     
     var body: some View {
         
         let motionY = makeArrays(time_arr: speedAndMotionData.motionTimeArray, y_arr: speedAndMotionData.motionYArray)
+        let motionTime = makeDoubleArrayToStringArray(arr: speedAndMotionData.motionTimeArray)
+        let motionY_Yvalues = makeArrayFromMotionArray(arr: motionY)
         
         NavigationView{
             VStack{
-                Text(speedAndMotionData.maxSpeed.description)
+                Text("Longest jump \(speedAndMotionData.longestAirtime)")
+                Text("Sum airtime \(speedAndMotionData.sumAirtime)")
+                Text("num of jumps \(speedAndMotionData.numOfJumps)")
                 
                 Text("Jump Stuff")
                     .bold()
@@ -42,6 +50,50 @@ struct CurrentDataView: View {
                             y: .value("Speed", motion.y_value))
                     }
                 }.padding()
+                    .chartOverlay{
+                        pr in GeometryReader {
+                            geoProxy in Rectangle().foregroundStyle(Color.orange.gradient)
+                                .frame(width: 2, height: geoProxy.size.height * 0.95)
+                                .opacity(showSelectionBar ? 1.0 : 0.0)
+                                .offset(x: offsetX)
+                            
+                            Capsule()
+                                .foregroundStyle(.red.gradient)
+                                .frame(width: 50, height: 40)
+                                .overlay {
+                                    VStack {
+                                        Text("\(selectedSpeed, specifier: "%.2f")")
+                                            .font(.system(size: 10))
+                                    }
+                                    .foregroundStyle(.white.gradient)
+                                }
+                                .opacity(showSelectionBar ? 1.0 : 0.0)
+                                .offset(x: offsetX - 50)
+                            
+                            Rectangle().fill(.clear).contentShape(Rectangle())
+                                .gesture(DragGesture().onChanged { value in
+                                    if !showSelectionBar {
+                                        showSelectionBar = true
+                                    }
+                                    let origin = geoProxy[pr.plotAreaFrame].origin
+                                    let location = CGPoint(
+                                        x: value.location.x - origin.x,
+                                        y: value.location.y - origin.y
+                                    )
+                                    offsetX = location.x
+                                    offsetY = location.y
+                                    
+                                    let (time, _) = pr.value(at: location, as: (String, Double).self) ?? ("-", 0.0)
+                                    print(time)
+                                    let index = motionTime.firstIndex(of: time)
+                                    let speed = motionY_Yvalues[index ?? 0]
+                                    selectedSpeed = speed
+                                }
+                                    .onEnded({ _ in
+                                        showSelectionBar = false
+                                    }))
+                        }
+                    }
                 
             }
             .navigationTitle("Your Run")
@@ -103,15 +155,15 @@ struct CurrentDataView: View {
             newItem.maxgForce = speedAndMotionData.maxGForce
             newItem.motionArray = speedAndMotionData.motionArray
             newItem.motionTimeArray = speedAndMotionData.motionTimeArray
+            newItem.longestAirtime = speedAndMotionData.longestAirtime
+            newItem.numOfJumps = speedAndMotionData.numOfJumps
+            newItem.sumAirtime = speedAndMotionData.sumAirtime
+            
             
 
             do {
                 try viewContext.save()
-                for item in items{
-                    print("motion time \(item.motionTimeArray?.count as Any)")
-                    print("speed time \(item.speedTimeArray?.count as Any)")
-                    print("")
-                }
+                
             } catch {
                 // Replace this implementation with code to handle the error appropriately.
                 // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
@@ -127,10 +179,19 @@ func makeArrays(time_arr: [Double], y_arr: [Double]) -> [Motion]{
     var array: [Motion] = []
     
     for i in 0...time_arr.count-1{
-        print("time arr \(time_arr[i]), y_arr \(y_arr[i])")
+//        print("time arr \(time_arr[i]), y_arr \(y_arr[i])")
         array.append(Motion(x_value: time_arr[i], y_value: y_arr[i]))
     }
     return array
+}
+
+private func makeDoubleArrayToStringArray(arr: [Double]) -> [String]{
+    var new_arr: [String] = []
+    
+    for val in arr{
+        new_arr.append(String(val))
+    }
+    return new_arr
 }
 
 

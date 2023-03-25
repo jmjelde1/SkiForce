@@ -75,7 +75,7 @@ func makeRegion(coordinates:[CLLocationCoordinate2D]) -> MKCoordinateRegion {
     
     var middle = coordinates.count/2
     
-    let noe = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: coordinates[middle].latitude, longitude: coordinates[middle].longitude), span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05))
+    let noe = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: coordinates[middle].latitude, longitude: coordinates[middle].longitude), span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01))
     
     print(noe.center)
     
