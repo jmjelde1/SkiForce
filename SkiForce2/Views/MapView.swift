@@ -10,10 +10,11 @@ import CoreLocation
 import MapKit
 
 struct MapView: View {
-    let item: Item
+    let latitudeArray: [Double]
+    let longitudeArray: [Double]
 
     var body: some View {
-        let coordinates = makeLineCoordinates(latitude: item.latitudeArray!, longitude: item.longitudeArray!)
+        let coordinates = makeLineCoordinates(latitude: latitudeArray, longitude: longitudeArray)
         let region = makeRegion(coordinates: coordinates)
         MapLineView(region: region, lineCoordinates: coordinates)
     }

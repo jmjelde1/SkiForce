@@ -37,66 +37,74 @@ struct CurrentDataView: View {
         
         NavigationView{
             VStack{
-                Text("Longest jump \(speedAndMotionData.longestAirtime)")
-                Text("Sum airtime \(speedAndMotionData.sumAirtime)")
-                Text("num of jumps \(speedAndMotionData.numOfJumps)")
+               Text("")
+                Divider()
+                    .frame(width: UIScreen.main.bounds.width - 40, height: 4)
+                    .overlay(.red)
+                HStack{
+                    
+                    VStack{
+                        Text("\(speedAndMotionData.maxSpeed, specifier: "%.2f")")
+                            .bold()
+                            .foregroundColor(Color.blue)
+                        Text("Max Speed")
+                    }.padding()
+                    VStack{
+                        Text("\(speedAndMotionData.averageSpeed, specifier: "%.2f")")
+                            .bold()
+                            .foregroundColor(Color.blue)
+                        Text("Average Speed")
+                    }.padding()
+                }.padding(.bottom, 20)
                 
-                Text("Jump Stuff")
-                    .bold()
-                Chart{
-                    ForEach(motionY) { motion in
-                        LineMark(
-                            x: .value("Time", motion.x_value),
-                            y: .value("Speed", motion.y_value))
-                    }
-                }.padding()
-                    .chartOverlay{
-                        pr in GeometryReader {
-                            geoProxy in Rectangle().foregroundStyle(Color.orange.gradient)
-                                .frame(width: 2, height: geoProxy.size.height * 0.95)
-                                .opacity(showSelectionBar ? 1.0 : 0.0)
-                                .offset(x: offsetX)
-                            
-                            Capsule()
-                                .foregroundStyle(.red.gradient)
-                                .frame(width: 50, height: 40)
-                                .overlay {
-                                    VStack {
-                                        Text("\(selectedSpeed, specifier: "%.2f")")
-                                            .font(.system(size: 10))
-                                    }
-                                    .foregroundStyle(.white.gradient)
-                                }
-                                .opacity(showSelectionBar ? 1.0 : 0.0)
-                                .offset(x: offsetX - 50)
-                            
-                            Rectangle().fill(.clear).contentShape(Rectangle())
-                                .gesture(DragGesture().onChanged { value in
-                                    if !showSelectionBar {
-                                        showSelectionBar = true
-                                    }
-                                    let origin = geoProxy[pr.plotAreaFrame].origin
-                                    let location = CGPoint(
-                                        x: value.location.x - origin.x,
-                                        y: value.location.y - origin.y
-                                    )
-                                    offsetX = location.x
-                                    offsetY = location.y
-                                    
-                                    let (time, _) = pr.value(at: location, as: (String, Double).self) ?? ("-", 0.0)
-                                    print(time)
-                                    let index = motionTime.firstIndex(of: time)
-                                    let speed = motionY_Yvalues[index ?? 0]
-                                    selectedSpeed = speed
-                                }
-                                    .onEnded({ _ in
-                                        showSelectionBar = false
-                                    }))
-                        }
-                    }
+                Divider()
+                    .frame(width: UIScreen.main.bounds.width - 40, height: 4)
+                    .overlay(.red)
+                
+                HStack{
+                    VStack{
+                        Text("\(speedAndMotionData.turns)")
+                            .bold()
+                            .foregroundColor(Color.blue)
+                        Text("Turns")
+                    }.padding()
+                    VStack{
+                        Text("\(speedAndMotionData.maxGForce, specifier: "%.2f")")
+                            .bold()
+                            .foregroundColor(Color.blue)
+                        Text("MAx G-force")
+                    }.padding()
+                }.padding(.bottom, 20)
+                
+                Divider()
+                    .frame(width: UIScreen.main.bounds.width - 40, height: 4)
+                    .overlay(.red)
+                
+                HStack{
+                    VStack{
+                        Text("\(speedAndMotionData.altitudeDifference)")
+                            .bold()
+                            .foregroundColor(Color.blue)
+                        Text("Total Descent")
+                    }.padding()
+                    VStack{
+                        Text("\(speedAndMotionData.numOfJumps)")
+                            .bold()
+                            .foregroundColor(Color.blue)
+                        Text("Jumps")
+                    }.padding()
+                }.padding(.bottom, 20)
+               
+                
+                
+                MapView(latitudeArray: speedAndMotionData.latitudeArray, longitudeArray: speedAndMotionData.longitudeArray)
+                    .padding()
+                    .cornerRadius(10)
+                
+               
                 
             }
-            .navigationTitle("Your Run")
+            .navigationTitle("Your Run - Summary")
             .toolbar{
                 ToolbarItem(placement: .navigationBarTrailing){
                     Button("Save"){

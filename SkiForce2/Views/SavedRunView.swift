@@ -72,7 +72,7 @@ struct SavedRunView: View {
             } else if graphTapped == true{
                 GraphView(item: item)
             } else if mapTapped == true{
-                MapView(item: item)
+                MapView(latitudeArray: item.latitudeArray!, longitudeArray: item.longitudeArray!)
             }
             
         }
@@ -98,6 +98,7 @@ struct GraphView: View{
         
         let speed_values = makeArrayFromMotionArray(arr: speeds)
         let speed_time_values = makeStringArray(arr: speeds)
+        let insets = EdgeInsets(top: 10, leading: 10, bottom: 5, trailing: 10)
         
         VStack{
           
@@ -148,7 +149,7 @@ struct GraphView: View{
                                 offsetY = location.y
                                 
                                 let (time, _) = pr.value(at: location, as: (String, Double).self) ?? ("-", 0.0)
-                                print(time)
+//                                print(time)
                                 let index = speed_time_values.firstIndex(of: time)
                                 let speed = speed_values[index ?? 0]
                                 selectedSpeed = speed
@@ -159,7 +160,8 @@ struct GraphView: View{
                     }
                 }
                 
-            }
+            }.groupBoxStyle(ColoredGroupBox())
+                .padding(insets)
             
             
             GroupBox("Motion Stuff"){
@@ -172,7 +174,8 @@ struct GraphView: View{
                 }
                 .padding()
                 .foregroundStyle(.red)
-            }
+            }.groupBoxStyle(ColoredGroupBox())
+                .padding(insets)
             
             
             GroupBox("Jump Stuff"){
@@ -184,7 +187,8 @@ struct GraphView: View{
                     }.interpolationMethod(.catmullRom)
                 }
                 .foregroundStyle(.red)
-            }
+            }.groupBoxStyle(ColoredGroupBox())
+                .padding(insets)
             
             
         }
@@ -311,7 +315,7 @@ struct StatsView: View {
                         Text("\(item.longestAirtime, specifier: "%.2f")")
                             .bold()
                             .foregroundColor(Color.blue)
-                        Text("Logest Air Time")
+                        Text("Longest Air Time")
                     }.padding()
                     VStack{
                         Text("\(item.sumAirtime, specifier: "%.2f")")

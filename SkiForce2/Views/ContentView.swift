@@ -15,7 +15,7 @@ struct ContentView: View {
             SeasonStatsView()
                 .tabItem{
                     Image(systemName: "figure.skiing.downhill")
-                    Text("Season Stats")
+                    Text("Stats")
                 }
             RecordView()
                 .tabItem{
