@@ -23,6 +23,13 @@ struct SeasonStatsView: View {
         let runCountArray = MakeRunCountArray(items: items)
         let insets = EdgeInsets(top: 0, leading: 10, bottom: 10, trailing: 10)
         let tripleInsets = EdgeInsets(top: 0, leading: 20, bottom: 10, trailing: 20)
+        let runData: [RunsPerMonth] = [
+            .init(month: "December", count: 24),
+            .init(month: "January", count: 40),
+            .init(month: "February", count: 66),
+            .init(month: "March", count: 45),
+            .init(month: "April", count: 55)
+        ]
         
         NavigationView{
             
@@ -132,24 +139,34 @@ struct SeasonStatsView: View {
                         }.padding(insets)
                     }
 
-                    GroupBox("Amount of Runs - Last Seven Days"){
-                        Chart(runCountArray){
-                            BarMark(
-                                x: .value("Week Day", $0.weekday, unit: .day),
-                                y: .value("Run Count", $0.runs)
-                            )
+                    GroupBox("Amount of Runs - Last Five Months"){
+//                        Chart(runCountArray){
+//                            BarMark(
+//                                x: .value("Week Day", $0.weekday, unit: .day),
+//                                y: .value("Run Count", $0.runs)
+//                            )
+                        
+                        Chart {
+                            ForEach(runData) { runs in
+                                BarMark(
+                                    x: .value("Month", runs.month),
+                                    y: .value("Count", runs.count)
+                                )
+                            }
+                           
+                        
                             .foregroundStyle(Color.red)
                         }
                         .chartYAxis{
                             AxisMarks(position: .leading)
                         }
-                        .chartXAxis{
-                            AxisMarks (values: .stride (by: .day)) { value in
-                                AxisGridLine().foregroundStyle(.orange)
-                                AxisValueLabel(format: .dateTime.weekday(),
-                                               centered: true)
-                            }
-                        }
+//                        .chartXAxis{
+//                            AxisMarks (values: .stride (by: .day)) { value in
+//                                AxisGridLine().foregroundStyle(.orange)
+//                                AxisValueLabel(format: .dateTime.weekday(),
+//                                               centered: true)
+//                            }
+//                        }
                         
                     }.groupBoxStyle(ColoredGroupBox())
                         .padding()
@@ -288,4 +305,10 @@ struct RunCount: Identifiable {
         dateFormatter.locale = Locale(identifier: "en_US")
         return  dateFormatter.string(from: weekday)
     }
+}
+
+struct RunsPerMonth: Identifiable {
+    var id = UUID()
+    var month: String
+    var count: Int
 }

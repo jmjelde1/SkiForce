@@ -55,7 +55,6 @@ struct HistoryView: View {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     EditButton()
                 }
-
             }
             .navigationTitle("Select an Item")
             Text("Select an item")

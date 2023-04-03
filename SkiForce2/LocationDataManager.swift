@@ -106,9 +106,9 @@ class LocationDataManager : NSObject, ObservableObject, CLLocationManagerDelegat
         
 //        delete last few seconds
 //        look at updateInterval to see how much time is deleted
-//        motion = motion.dropLast(80)
-//        motionY = motionY.dropLast(80)
-//        motionTime = motionTime.dropLast(80)
+        motion = motion.dropLast(80)
+        motionY = motionY.dropLast(80)
+        motionTime = motionTime.dropLast(80)
         
         
         let airtimes = airtime(motionY: motionY, motionTime: motionTime)

@@ -34,6 +34,7 @@ struct CurrentDataView: View {
         let motionY = makeArrays(time_arr: speedAndMotionData.motionTimeArray, y_arr: speedAndMotionData.motionYArray)
         let motionTime = makeDoubleArrayToStringArray(arr: speedAndMotionData.motionTimeArray)
         let motionY_Yvalues = makeArrayFromMotionArray(arr: motionY)
+        let _ = displayData(items: items)
         
         NavigationView{
             VStack{
@@ -97,9 +98,9 @@ struct CurrentDataView: View {
                
                 
                 
-                MapView(latitudeArray: speedAndMotionData.latitudeArray, longitudeArray: speedAndMotionData.longitudeArray)
-                    .padding()
-                    .cornerRadius(10)
+//                MapView(latitudeArray: speedAndMotionData.latitudeArray, longitudeArray: speedAndMotionData.longitudeArray)
+//                    .padding()
+//                    .cornerRadius(10)
                 
                
                 
@@ -202,10 +203,10 @@ private func makeDoubleArrayToStringArray(arr: [Double]) -> [String]{
     return new_arr
 }
 
+private func displayData(items: FetchedResults<Item>){
+    for item in items {
+        print(item.name!)
+        print(item.motionArray!)
+    }
+}
 
-
-//struct CurrentDataView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        CurrentDataView(gpsData: GpsData)
-//    }
-//}
