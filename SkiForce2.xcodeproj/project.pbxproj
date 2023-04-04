@@ -20,6 +20,8 @@
 		AEB7DB9E29B2871D00B8181A /* LocationDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEB7DB9D29B2871D00B8181A /* LocationDataManager.swift */; };
 		AEB7DBA029B5583700B8181A /* SavedRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEB7DB9F29B5583700B8181A /* SavedRunView.swift */; };
 		AED9AB8729C12F1A00CC6DF3 /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AED9AB8629C12F1A00CC6DF3 /* MapView.swift */; };
+		AEF857E429DB89CC00012E9E /* FourierTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEF857E329DB89CC00012E9E /* FourierTransform.swift */; };
+		AEF857E629DB916100012E9E /* SwiftSkiTypeClassifier.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = AEF857E529DB916100012E9E /* SwiftSkiTypeClassifier.mlmodel */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +40,8 @@
 		AEB7DB9F29B5583700B8181A /* SavedRunView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedRunView.swift; sourceTree = "<group>"; };
 		AED9AB8629C12F1A00CC6DF3 /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
 		AED9AB8829C1930E00CC6DF3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		AEF857E329DB89CC00012E9E /* FourierTransform.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FourierTransform.swift; sourceTree = "<group>"; };
+		AEF857E529DB916100012E9E /* SwiftSkiTypeClassifier.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = SwiftSkiTypeClassifier.mlmodel; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,6 +74,7 @@
 		AE2B0BFE29B1AAB50073CBBA /* SkiForce2 */ = {
 			isa = PBXGroup;
 			children = (
+				AEF857E529DB916100012E9E /* SwiftSkiTypeClassifier.mlmodel */,
 				AED9AB8829C1930E00CC6DF3 /* Info.plist */,
 				AEB7DB9429B26CF900B8181A /* Views */,
 				AE2B0BFF29B1AAB50073CBBA /* SkiForce2App.swift */,
@@ -78,6 +83,7 @@
 				AE2B0C0A29B1AAB90073CBBA /* SkiForce2.xcdatamodeld */,
 				AE2B0C0529B1AAB90073CBBA /* Preview Content */,
 				AEB7DB9D29B2871D00B8181A /* LocationDataManager.swift */,
+				AEF857E329DB89CC00012E9E /* FourierTransform.swift */,
 			);
 			path = SkiForce2;
 			sourceTree = "<group>";
@@ -174,6 +180,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AEF857E629DB916100012E9E /* SwiftSkiTypeClassifier.mlmodel in Sources */,
 				AEB7DB9C29B27AA100B8181A /* CurrentDataView.swift in Sources */,
 				AE2B0C0929B1AAB90073CBBA /* Persistence.swift in Sources */,
 				AEB7DB9829B26D4800B8181A /* RecordView.swift in Sources */,
@@ -183,6 +190,7 @@
 				AEB7DB9629B26D2900B8181A /* HistoryView.swift in Sources */,
 				AE2B0C0C29B1AAB90073CBBA /* SkiForce2.xcdatamodeld in Sources */,
 				AEB7DB9E29B2871D00B8181A /* LocationDataManager.swift in Sources */,
+				AEF857E429DB89CC00012E9E /* FourierTransform.swift in Sources */,
 				AEB7DBA029B5583700B8181A /* SavedRunView.swift in Sources */,
 				AE2B0C0029B1AAB50073CBBA /* SkiForce2App.swift in Sources */,
 			);

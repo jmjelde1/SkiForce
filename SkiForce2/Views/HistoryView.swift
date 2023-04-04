@@ -46,7 +46,8 @@ struct HistoryView: View {
 //                        Text("Item at \(item.timestamp!, formatter: itemFormatter)")
 //
                     } label: {
-                        Text(item.timestamp!, formatter: itemFormatter)
+//                        Text(item.timestamp!, formatter: itemFormatter)
+                        Text("\(item.name ?? "No name"), \(item.timestamp)",  formatter: itemFormatter)
                     }
                 }
                 .onDelete(perform: deleteItems)
@@ -56,7 +57,7 @@ struct HistoryView: View {
                     EditButton()
                 }
             }
-            .navigationTitle("Select an Item")
+            .navigationTitle("Select Run")
             Text("Select an item")
         }.accentColor(.black)
     }

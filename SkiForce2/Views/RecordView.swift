@@ -82,12 +82,13 @@ struct SpeedAndMotionData: Identifiable {
     let longestAirtime: Double
     let sumAirtime: Double
     let numOfJumps: Int16
+    let skiType: String
 }
 
 func getSpeedAndMotionData(_ locationManager: LocationDataManager) -> SpeedAndMotionData{
 
 
-    let speedAndMotion = SpeedAndMotionData(speedArray: locationManager.speeds, speedTimeArray: locationManager.speedTime, altitudeDifference: locationManager.altitudeDifference, averageSpeed: locationManager.averageSpeed, maxSpeed: locationManager.maxSpeed, latitudeArray: locationManager.latitudeArray, longitudeArray: locationManager.longitudeArray, minAltitude: locationManager.minAltitude, maxAltitude: locationManager.maxAltitude, motionYArray: locationManager.motionY, motionArray: locationManager.motion, motionTimeArray: locationManager.motionTime, maxGForce: locationManager.maxGForce, turns: locationManager.turns, longestAirtime: locationManager.longestAirtime, sumAirtime: locationManager.sumAirtime, numOfJumps: locationManager.numOfJumps)
+    let speedAndMotion = SpeedAndMotionData(speedArray: locationManager.speeds, speedTimeArray: locationManager.speedTime, altitudeDifference: locationManager.altitudeDifference, averageSpeed: locationManager.averageSpeed, maxSpeed: locationManager.maxSpeed, latitudeArray: locationManager.latitudeArray, longitudeArray: locationManager.longitudeArray, minAltitude: locationManager.minAltitude, maxAltitude: locationManager.maxAltitude, motionYArray: locationManager.motionY, motionArray: locationManager.motion, motionTimeArray: locationManager.motionTime, maxGForce: locationManager.maxGForce, turns: locationManager.turns, longestAirtime: locationManager.longestAirtime, sumAirtime: locationManager.sumAirtime, numOfJumps: locationManager.numOfJumps, skiType: locationManager.skiType)
     
     locationManager.clearAllData()
     

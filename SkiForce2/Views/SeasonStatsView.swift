@@ -24,18 +24,20 @@ struct SeasonStatsView: View {
         let insets = EdgeInsets(top: 0, leading: 10, bottom: 10, trailing: 10)
         let tripleInsets = EdgeInsets(top: 0, leading: 20, bottom: 10, trailing: 20)
         let runData: [RunsPerMonth] = [
-            .init(month: "December", count: 24),
-            .init(month: "January", count: 40),
-            .init(month: "February", count: 66),
-            .init(month: "March", count: 45),
-            .init(month: "April", count: 55)
+            .init(month: "December", count: 24, discipline: "Giant Slalom"),
+            .init(month: "December", count: 14, discipline: "Slalom"),
+            .init(month: "January", count: 24, discipline: "Giant Slalom"),
+            .init(month: "January", count: 40, discipline: "Slalom"),
+            .init(month: "February", count: 30, discipline: "Giant Slalom"),
+            .init(month: "February", count: 8, discipline: "Slalom"),
+            .init(month: "March", count: 32, discipline: "Giant Slalom"),
+            .init(month: "March", count: 19, discipline: "Slalom"),
+            .init(month: "April", count: 30, discipline: "Giant Slalom"),
+            .init(month: "April", count: 20, discipline: "Slalom")
         ]
         
         NavigationView{
-            
-            
             VStack{
-                
                 Group{
                     HStack{
                         Text("Records")
@@ -152,11 +154,13 @@ struct SeasonStatsView: View {
                                     x: .value("Month", runs.month),
                                     y: .value("Count", runs.count)
                                 )
+                                .cornerRadius(5)
+                                .foregroundStyle(by: .value("Discpline", runs.discipline))
+                                .opacity(0.9)
                             }
-                           
-                        
-                            .foregroundStyle(Color.red)
                         }
+                        .chartForegroundStyleScale(["Giant Slalom": Color.red.gradient, "Slalom": Color.blue.gradient])
+        
                         .chartYAxis{
                             AxisMarks(position: .leading)
                         }
@@ -311,4 +315,5 @@ struct RunsPerMonth: Identifiable {
     var id = UUID()
     var month: String
     var count: Int
+    var discipline: String
 }

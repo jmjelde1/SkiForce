@@ -34,11 +34,14 @@ struct CurrentDataView: View {
         let motionY = makeArrays(time_arr: speedAndMotionData.motionTimeArray, y_arr: speedAndMotionData.motionYArray)
         let motionTime = makeDoubleArrayToStringArray(arr: speedAndMotionData.motionTimeArray)
         let motionY_Yvalues = makeArrayFromMotionArray(arr: motionY)
-        let _ = displayData(items: items)
+//        let _ = displayData(items: items)
         
         NavigationView{
             VStack{
                Text("")
+                Text(speedAndMotionData.skiType)
+                    .bold()
+                    .foregroundColor(.red)
                 Divider()
                     .frame(width: UIScreen.main.bounds.width - 40, height: 4)
                     .overlay(.red)

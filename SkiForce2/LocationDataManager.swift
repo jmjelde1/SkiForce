@@ -10,10 +10,12 @@ import Foundation
 import CoreLocation
 import Accelerate
 import CoreMotion
+import CoreML
 
 class LocationDataManager : NSObject, ObservableObject, CLLocationManagerDelegate {
     
     @Published var authorizationStatus: CLAuthorizationStatus?
+    
     
     var locationManager = CLLocationManager()
     var motionManager = CMMotionManager()
@@ -43,6 +45,7 @@ class LocationDataManager : NSObject, ObservableObject, CLLocationManagerDelegat
     var longestAirtime: Double = 0.0
     var sumAirtime: Double = 0.0
     var numOfJumps: Int16 = 0
+    var skiType: String = ""
     
     
     override init() {
@@ -110,6 +113,24 @@ class LocationDataManager : NSObject, ObservableObject, CLLocationManagerDelegat
         motionY = motionY.dropLast(80)
         motionTime = motionTime.dropLast(80)
         
+//      if mottion is large enough
+        if (motion.count < 128){
+            print("less than 128 elements")
+        }else{
+//        Convert motion into an array Fourier Tranform can take
+            let floats = Array(motion.suffix(128)).map{ Float($0) }
+//        fast fourier transform
+            let transformedData = FourierTransform().Transform(signal: floats)
+//            make prediction
+            let prediction = PredictSkiType(data: transformedData)
+            if prediction == "sl" {
+                skiType = "Slalom"
+            }else{
+                skiType = "Giant Slalom"
+            }
+        }
+
+        
         
         let airtimes = airtime(motionY: motionY, motionTime: motionTime)
         longestAirtime = airtimes.max() ?? 0
@@ -140,6 +161,7 @@ class LocationDataManager : NSObject, ObservableObject, CLLocationManagerDelegat
         longestAirtime = 0.0
         sumAirtime = 0.0
         numOfJumps = 0
+        skiType = ""
     }
     
     func startUpdatingMotion(){
@@ -209,6 +231,19 @@ class LocationDataManager : NSObject, ObservableObject, CLLocationManagerDelegat
         }
         
         return airtime
+    }
+    
+    func PredictSkiType(data: [Double]) -> String{
+        do {
+            let config = MLModelConfiguration()
+            let model = try SwiftSkiTypeClassifier(configuration: config)
+            let prediction = try model.prediction(_0: data[0], _1: data[1], _2: data[2], _3: data[3], _4: data[4], _5: data[5], _6: data[6], _7: data[7], _8: data[8], _9: data[9], _10: data[10], _11: data[11], _12: data[12], _13: data[13], _14: data[14], _15: data[15], _16: data[16], _17: data[17], _18: data[18], _19: data[19], _20: data[20], _21: data[21], _22: data[22], _23:  data[23], _24: data[24], _25: data[25], _26: data[26], _27: data[27], _28: data[28], _29: data[29], _30: data[30], _31: data[31], _32: data[32], _33: data[33], _34: data[34], _35: data[35], _36: data[36], _37: data[37], _38: data[38], _39: data[39], _40: data[40], _41: data[41], _42: data[42], _43: data[43], _44: data[44], _45: data[45], _46: data[46], _47: data[47], _48: data[48], _49: data[49], _50: data[50], _51: data[51], _52: data[52], _53: data[53], _54: data[54], _55: data[55], _56: data[56], _57: data[57], _58: data[58], _59: data[59], _60: data[60], _61: data[61], _62: data[62], _63: data[63])
+            
+            return prediction.target
+           
+        } catch {
+            return "Did not work"
+        }
     }
 }
 
