@@ -51,7 +51,7 @@ class LocationDataManager : NSObject, ObservableObject, CLLocationManagerDelegat
     override init() {
         super.init()
         locationManager.delegate = self
-        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
         locationManager.requestWhenInUseAuthorization()
     }
     
@@ -68,7 +68,7 @@ class LocationDataManager : NSObject, ObservableObject, CLLocationManagerDelegat
         }
         if (Date().toSeconds() - self.speedStartTime > 5){
             
-            self.speeds.append(first.speed)
+            self.speeds.append(first.speed * 3.6)
             self.altitudes.append(first.altitude)
         
                 
@@ -105,7 +105,7 @@ class LocationDataManager : NSObject, ObservableObject, CLLocationManagerDelegat
             altitudeDifference = 0
         }
         averageSpeed = vDSP.mean(speeds)
-        maxSpeed = speeds.max() ?? 0
+        maxSpeed = (speeds.max() ?? 0)
         
 //        delete last few seconds
 //        look at updateInterval to see how much time is deleted
@@ -115,7 +115,7 @@ class LocationDataManager : NSObject, ObservableObject, CLLocationManagerDelegat
         
 //      if mottion is large enough
         if (motion.count < 128){
-            print("less than 128 elements")
+            skiType = "Not enough data to decide ski type"
         }else{
 //        Convert motion into an array Fourier Tranform can take
             let floats = Array(motion.suffix(128)).map{ Float($0) }

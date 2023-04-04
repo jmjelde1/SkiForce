@@ -18,9 +18,7 @@ struct HistoryView: View {
     
     var body: some View {
         
-        
         NavigationView {
-            
             List {
                 ForEach(items) { item in
                     NavigationLink {
@@ -47,7 +45,14 @@ struct HistoryView: View {
 //
                     } label: {
 //                        Text(item.timestamp!, formatter: itemFormatter)
-                        Text("\(item.name ?? "No name"), \(item.timestamp)",  formatter: itemFormatter)
+//                        Text("\(item.name ?? "No name")")
+                        HStack{
+                            Text("\(item.name ?? "No name")")
+                                .bold()
+                            Text("\(dateToString(date:item.timestamp!))")
+                                .frame(maxWidth: .infinity, alignment: .trailing)
+                        }
+                            
                     }
                 }
                 .onDelete(perform: deleteItems)
@@ -92,12 +97,19 @@ struct HistoryView: View {
             }
         }
     }
+    
+    private func dateToString(date: Date) -> String{
+        let formatter = DateFormatter()
+        formatter.dateStyle = .medium
+        formatter.timeStyle = .short
+        return formatter.string(from: date)
+    }
 }
 
 private let itemFormatter: DateFormatter = {
     let formatter = DateFormatter()
-    formatter.dateStyle = .short
-    formatter.timeStyle = .medium
+    formatter.dateStyle = .medium
+    formatter.timeStyle = .short
     return formatter
 }()
 

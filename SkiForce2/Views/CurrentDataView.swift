@@ -33,15 +33,18 @@ struct CurrentDataView: View {
         
         let motionY = makeArrays(time_arr: speedAndMotionData.motionTimeArray, y_arr: speedAndMotionData.motionYArray)
         let motionTime = makeDoubleArrayToStringArray(arr: speedAndMotionData.motionTimeArray)
-        let motionY_Yvalues = makeArrayFromMotionArray(arr: motionY)
+//        let motionY_Yvalues = makeArrayFromMotionArray(arr: motionY)
 //        let _ = displayData(items: items)
         
         NavigationView{
-            VStack{
-               Text("")
+            ScrollView{
+//               Text("")
+                
                 Text(speedAndMotionData.skiType)
                     .bold()
-                    .foregroundColor(.red)
+                    .foregroundColor(.blue)
+                    .font(.title3)
+                    .padding(.top, 50)
                 Divider()
                     .frame(width: UIScreen.main.bounds.width - 40, height: 4)
                     .overlay(.red)
@@ -60,11 +63,11 @@ struct CurrentDataView: View {
                         Text("Average Speed")
                     }.padding()
                 }.padding(.bottom, 20)
-                
+//                
                 Divider()
                     .frame(width: UIScreen.main.bounds.width - 40, height: 4)
                     .overlay(.red)
-                
+   
                 HStack{
                     VStack{
                         Text("\(speedAndMotionData.turns)")
@@ -86,7 +89,7 @@ struct CurrentDataView: View {
                 
                 HStack{
                     VStack{
-                        Text("\(speedAndMotionData.altitudeDifference)")
+                        Text("\(speedAndMotionData.altitudeDifference, specifier: "%.2f")")
                             .bold()
                             .foregroundColor(Color.blue)
                         Text("Total Descent")
@@ -99,11 +102,11 @@ struct CurrentDataView: View {
                     }.padding()
                 }.padding(.bottom, 20)
                
+                Spacer()
                 
-                
-//                MapView(latitudeArray: speedAndMotionData.latitudeArray, longitudeArray: speedAndMotionData.longitudeArray)
-//                    .padding()
-//                    .cornerRadius(10)
+                MapView(latitudeArray: speedAndMotionData.latitudeArray, longitudeArray: speedAndMotionData.longitudeArray)
+                    .padding()
+                    .frame(width: 400, height: 250, alignment: .bottom)
                 
                
                 
@@ -170,9 +173,8 @@ struct CurrentDataView: View {
             newItem.longestAirtime = speedAndMotionData.longestAirtime
             newItem.numOfJumps = speedAndMotionData.numOfJumps
             newItem.sumAirtime = speedAndMotionData.sumAirtime
+            newItem.discipline = speedAndMotionData.skiType
             
-            
-
             do {
                 try viewContext.save()
                 

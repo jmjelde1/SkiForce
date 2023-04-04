@@ -102,7 +102,7 @@ struct GraphView: View{
         
         VStack{
           
-            GroupBox("Speed Graph / meters per second"){
+            GroupBox("Speed - KM/H"){
                 Chart{
                     ForEach(speeds) { speed in
                         LineMark(
@@ -112,7 +112,7 @@ struct GraphView: View{
 //                    .interpolationMethod(.catmullRom)
                     
                 }
-                .padding()
+//                .padding()
                 .cornerRadius(10)
                 .foregroundStyle(.red)
                 .chartOverlay {
@@ -164,31 +164,31 @@ struct GraphView: View{
                 .padding(insets)
             
             
-            GroupBox("Motion Stuff"){
+            GroupBox("Turns - G-Force"){
                 Chart{
                     ForEach(motionArray) { motion in
                         LineMark(
                             x: .value("Time", motion.x_value),
                             y: .value("Speed", motion.y_value))
-                    }.interpolationMethod(.catmullRom)
+                    }.interpolationMethod(.cardinal)
                 }
-                .padding()
+//                .padding()
                 .foregroundStyle(.red)
             }.groupBoxStyle(ColoredGroupBox())
                 .padding(insets)
             
             
-            GroupBox("Jump Stuff"){
-                Chart{
-                    ForEach(motionYArray) { motion in
-                        LineMark(
-                            x: .value("Time", motion.x_value),
-                            y: .value("Speed", motion.y_value))
-                    }.interpolationMethod(.catmullRom)
-                }
-                .foregroundStyle(.red)
-            }.groupBoxStyle(ColoredGroupBox())
-                .padding(insets)
+//            GroupBox("Jump Stuff"){
+//                Chart{
+//                    ForEach(motionYArray) { motion in
+//                        LineMark(
+//                            x: .value("Time", motion.x_value),
+//                            y: .value("Speed", motion.y_value))
+//                    }.interpolationMethod(.catmullRom)
+//                }
+//                .foregroundStyle(.red)
+//            }.groupBoxStyle(ColoredGroupBox())
+//                .padding(insets)
             
             
         }
@@ -342,17 +342,6 @@ struct StatsView: View {
 
 struct Speed: Identifiable {
     let id = UUID()
-    let x_value: Double
-    let y_value: Double
-    
-    init(x_value: Double, y_value: Double){
-        self.x_value = x_value
-        self.y_value = y_value
-    }
-}
-
-struct Motion: Identifiable {
-    let id = UUID()
     let x_value: String
     let y_value: Double
     
@@ -362,13 +351,26 @@ struct Motion: Identifiable {
     }
 }
 
-func makeSpeedArray(model: Item) -> [Motion]{
+struct Motion: Identifiable {
+    let id = UUID()
+    let x_value: Double
+    let y_value: Double
+    
+    init(x_value: Double, y_value: Double){
+        self.x_value = x_value
+        self.y_value = y_value
+    }
+}
+
+
+
+func makeSpeedArray(model: Item) -> [Speed]{
     let x_arr = model.speedTimeArray
     let y_arr = model.speedArray
-    var array: [Motion] = []
+    var array: [Speed] = []
     
     for i in 0...x_arr!.count-1{
-        array.append(Motion(x_value: x_arr![i], y_value: y_arr![i]))
+        array.append(Speed(x_value: x_arr![i], y_value: y_arr![i]))
     }
     return array
 }
@@ -395,7 +397,7 @@ func makeMotionYArray(model: Item) -> [Motion]{
     return array
 }
 
-func makeArrayFromMotionArray(arr: [Motion]) -> [Double]{
+func makeArrayFromMotionArray(arr: [Speed]) -> [Double]{
     
     var new_arr: [Double] = []
     
@@ -412,7 +414,7 @@ func makeArrayFromMotionArray(arr: [Motion]) -> [Double]{
     return new_arr
 }
 
-func makeStringArray(arr: [Motion]) -> [String]{
+func makeStringArray(arr: [Speed]) -> [String]{
     var new_arr: [String] = []
     
     for value in arr{

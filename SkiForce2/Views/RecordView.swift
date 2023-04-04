@@ -20,6 +20,7 @@ struct RecordView: View {
     var body: some View {
         
         VStack {
+            
             Button(action: {
                 count += 1
                 locationDataManager.startUpdatingSpeed()
@@ -33,7 +34,8 @@ struct RecordView: View {
                     locationDataManager.stopUpdatingSpeedAndMotion()
                 }
                 
-            }){
+            }
+            ){
                 Text(buttonTapped ? "Stop Recording" : "Press to record")
                     .bold()
                     .foregroundColor(Color.white)
