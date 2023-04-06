@@ -51,10 +51,10 @@ struct SeasonStatsView: View {
                     
                     HStack{
                         VStack{
-                            Text("\(seasonStatData.maxSpeed, specifier: "%.2f")")
-                                .bold()
-                                .foregroundColor(Color.blue)
-                            Text("Max Speed")
+                                Text("\(seasonStatData.maxSpeed, specifier: "%.2f")")
+                                    .bold()
+                                    .foregroundColor(Color.blue)
+                            Text("Max Speed (km/h)")
                         }.padding(insets)
                         
                         
@@ -71,14 +71,14 @@ struct SeasonStatsView: View {
                             Text("\(seasonStatData.maxAltitude, specifier: "%.2f")")
                                 .bold()
                                 .foregroundColor(Color.blue)
-                            Text("Max Altitude")
+                            Text("Max Altitude (m)")
                         }.padding(insets)
                         
                         VStack{
                             Text("\(seasonStatData.largestDescent, specifier: "%.2f")")
                                 .bold()
                                 .foregroundColor(Color.blue)
-                            Text("Largest Descent")
+                            Text("Largest Descent (m)")
                         }.padding(insets)
 
                     }
@@ -87,7 +87,7 @@ struct SeasonStatsView: View {
                         Text("\(seasonStatData.longestAirtime, specifier: "%.2f")")
                             .bold()
                             .foregroundColor(Color.blue)
-                        Text("Longest Airtime")
+                        Text("Longest Airtime (s)")
                     }.padding(insets)
                     
                     HStack{
@@ -130,14 +130,14 @@ struct SeasonStatsView: View {
                             Text("\(seasonStatData.totalAirtime, specifier: "%.2f")")
                                 .bold()
                                 .foregroundColor(Color.blue)
-                            Text("Airtime")
+                            Text("Airtime (s)")
                         }.padding(insets)
                         
                         VStack{
                             Text("\(seasonStatData.totalAltitudeDescent, specifier: "%.2f")")
                                 .bold()
                                 .foregroundColor(Color.blue)
-                            Text("Altitude Descent")
+                            Text("Altitude Descent (m)")
                         }.padding(insets)
                     }
 

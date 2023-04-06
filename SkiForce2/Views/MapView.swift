@@ -36,7 +36,9 @@ struct MapLineView: UIViewRepresentable {
     return mapView
   }
 
-  func updateUIView(_ view: MKMapView, context: Context) {}
+  func updateUIView(_ view: MKMapView, context: Context) {
+      view.mapType = .hybrid
+  }
 
   func makeCoordinator() -> Coordinator {
     Coordinator(self)

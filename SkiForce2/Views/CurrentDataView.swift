@@ -33,18 +33,25 @@ struct CurrentDataView: View {
         
         let motionY = makeArrays(time_arr: speedAndMotionData.motionTimeArray, y_arr: speedAndMotionData.motionYArray)
         let motionTime = makeDoubleArrayToStringArray(arr: speedAndMotionData.motionTimeArray)
-//        let motionY_Yvalues = makeArrayFromMotionArray(arr: motionY)
+        let currInsets = EdgeInsets(top: 1, leading: 1, bottom: 1, trailing: 1)
+        //        let motionY_Yvalues = makeArrayFromMotionArray(arr: motionY)
 //        let _ = displayData(items: items)
+        
         
         NavigationView{
             ScrollView{
 //               Text("")
-                
-                Text(speedAndMotionData.skiType)
-                    .bold()
-                    .foregroundColor(.blue)
-                    .font(.title3)
-                    .padding(.top, 50)
+                HStack{
+                    Text("Ski Type Prediction: ")
+                        .bold()
+                        .font(.title3)
+                    
+                    Text(speedAndMotionData.skiType)
+                        .bold()
+                        .foregroundColor(.blue)
+                        .font(.title3)
+                        
+                }.padding(.top, 30)
                 Divider()
                     .frame(width: UIScreen.main.bounds.width - 40, height: 4)
                     .overlay(.red)
@@ -54,13 +61,13 @@ struct CurrentDataView: View {
                         Text("\(speedAndMotionData.maxSpeed, specifier: "%.2f")")
                             .bold()
                             .foregroundColor(Color.blue)
-                        Text("Max Speed")
+                        Text("Max Speed (km/h)")
                     }.padding()
                     VStack{
                         Text("\(speedAndMotionData.averageSpeed, specifier: "%.2f")")
                             .bold()
                             .foregroundColor(Color.blue)
-                        Text("Average Speed")
+                        Text("Average Speed (km/h)")
                     }.padding()
                 }.padding(.bottom, 20)
 //                
@@ -79,7 +86,7 @@ struct CurrentDataView: View {
                         Text("\(speedAndMotionData.maxGForce, specifier: "%.2f")")
                             .bold()
                             .foregroundColor(Color.blue)
-                        Text("MAx G-force")
+                        Text("Max G-force")
                     }.padding()
                 }.padding(.bottom, 20)
                 
@@ -92,7 +99,7 @@ struct CurrentDataView: View {
                         Text("\(speedAndMotionData.altitudeDifference, specifier: "%.2f")")
                             .bold()
                             .foregroundColor(Color.blue)
-                        Text("Total Descent")
+                        Text("Total Descent (m)")
                     }.padding()
                     VStack{
                         Text("\(speedAndMotionData.numOfJumps)")
@@ -100,14 +107,19 @@ struct CurrentDataView: View {
                             .foregroundColor(Color.blue)
                         Text("Jumps")
                     }.padding()
-                }.padding(.bottom, 20)
+                }.padding(.bottom, 5)
                
                 Spacer()
-                
-                MapView(latitudeArray: speedAndMotionData.latitudeArray, longitudeArray: speedAndMotionData.longitudeArray)
-                    .padding()
-                    .frame(width: 400, height: 250, alignment: .bottom)
-                
+//                GroupBox{
+                    MapView(latitudeArray: speedAndMotionData.latitudeArray, longitudeArray: speedAndMotionData.longitudeArray)
+                        .cornerRadius(20)
+//                        .padding()
+                        .frame(width: 380, height: 270, alignment: .bottom)
+        
+                    
+//                }
+//                        .groupBoxStyle(CurrentDataGroupBox())
+//                    .padding(currInsets)
                
                 
             }
@@ -212,6 +224,26 @@ private func displayData(items: FetchedResults<Item>){
     for item in items {
         print(item.name!)
         print(item.motionArray!)
+    }
+}
+
+struct CurrentDataGroupBox: GroupBoxStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        VStack {
+            HStack {
+                configuration.label
+                    .font(.headline)
+                Spacer()
+            }
+            
+            configuration.content
+        }
+        .padding()
+        .background(RoundedRectangle(cornerRadius: 8, style: .continuous)
+            .fill(.gray.opacity(0.3))) // Set your color here!!
+//        .overlay(RoundedRectangle(cornerRadius: 10)
+//            .stroke(.red, lineWidth: 2))
+        
     }
 }
 

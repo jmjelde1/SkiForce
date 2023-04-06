@@ -65,11 +65,13 @@ struct SavedRunView: View {
         
 
             
-            Spacer()
+            
             
             if statsTapped == true{
+//                Spacer()
                 StatsView(item: item)
             } else if graphTapped == true{
+//                Spacer()
                 GraphView(item: item)
             } else if mapTapped == true{
                 MapView(latitudeArray: item.latitudeArray!, longitudeArray: item.longitudeArray!)
@@ -102,7 +104,7 @@ struct GraphView: View{
         
         VStack{
           
-            GroupBox("Speed - KM/H"){
+            GroupBox("Speed - km/h"){
                 Chart{
                     ForEach(speeds) { speed in
                         LineMark(
@@ -209,7 +211,7 @@ struct StatsView: View {
                 HStack{
                     Image(systemName: "speedometer")
                         .font(.system(size: 15))
-                    Text("Speeds")
+                    Text("Speeds (km/h)")
                         .font(.system(size: 20))
                 }.padding(.top, 20)
                 
@@ -236,7 +238,7 @@ struct StatsView: View {
                 HStack{
                     Image(systemName: "mountain.2")
                         .font(.system(size: 15))
-                    Text("Altitudes")
+                    Text("Altitudes (meters)")
                         .font(.system(size: 20))
                 }
                 
@@ -302,7 +304,7 @@ struct StatsView: View {
                 HStack{
                     Image(systemName: "airplane.departure")
                         .font(.system(size: 15))
-                    Text("Airtime")
+                    Text("Airtime (seconds)")
                         .font(.system(size: 20))
                 }
 
