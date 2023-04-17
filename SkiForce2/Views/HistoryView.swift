@@ -4,6 +4,8 @@
 //
 //  Created by Joachim Mjelde on 3/3/23.
 //
+// List view of all recorded runs
+//
 
 import SwiftUI
 
@@ -36,16 +38,7 @@ struct HistoryView: View {
                                     }
                                 }
                             }
-                    
-                    
-                
-            
-                        
-//                        Text("Item at \(item.timestamp!, formatter: itemFormatter)")
-//
                     } label: {
-//                        Text(item.timestamp!, formatter: itemFormatter)
-//                        Text("\(item.name ?? "No name")")
                         HStack{
                             Text("\(item.name ?? "No name")")
                                 .bold()
@@ -66,7 +59,7 @@ struct HistoryView: View {
             Text("Select an item")
         }.accentColor(.black)
     }
-
+//    Adds item to database
     private func addItem() {
         withAnimation {
             let newItem = Item(context: viewContext)
@@ -75,14 +68,13 @@ struct HistoryView: View {
             do {
                 try viewContext.save()
             } catch {
-                // Replace this implementation with code to handle the error appropriately.
-                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
                 let nsError = error as NSError
                 fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
             }
         }
     }
 
+//    Deletes specified item from database
     private func deleteItems(offsets: IndexSet) {
         withAnimation {
             offsets.map { items[$0] }.forEach(viewContext.delete)
@@ -90,14 +82,13 @@ struct HistoryView: View {
             do {
                 try viewContext.save()
             } catch {
-                // Replace this implementation with code to handle the error appropriately.
-                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
                 let nsError = error as NSError
                 fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
             }
         }
     }
     
+//    Converts date to string
     private func dateToString(date: Date) -> String{
         let formatter = DateFormatter()
         formatter.dateStyle = .medium
@@ -106,6 +97,7 @@ struct HistoryView: View {
     }
 }
 
+// Formats date
 private let itemFormatter: DateFormatter = {
     let formatter = DateFormatter()
     formatter.dateStyle = .medium

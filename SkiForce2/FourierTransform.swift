@@ -4,6 +4,7 @@
 //
 //  Created by Joachim Mjelde on 4/3/23.
 //
+// Fourier Transform
 
 import Accelerate
 import Foundation
@@ -13,7 +14,6 @@ class FourierTransform {
 //   performs a Fourier transform on the signal array
     func Transform(signal: [Float]) -> [Double]{
         // Perform Fourier Transform
-        
         var magnitudes = [Float](repeating: 0, count: Int(signal.count))
         
         var signal_fft = [Float](repeating: 0.0, count: signal.count)
@@ -24,8 +24,6 @@ class FourierTransform {
                                                   imagp: UnsafeMutablePointer(mutating: signal_fft))
         vDSP_fft_zrip(fftSetup, &splitComplexSignal, 1, log2n, FFTDirection(FFT_FORWARD))
 
-        // Print the Fourier Transform results
-//        print(signal_fft)
         vDSP.absolute(signal_fft, result: &magnitudes)
         var doubles = magnitudes.map{Double($0)}
         return doubles

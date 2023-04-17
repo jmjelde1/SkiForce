@@ -4,6 +4,8 @@
 //
 //  Created by Joachim Mjelde on 3/3/23.
 //
+// View for season stats
+//
 
 import SwiftUI
 import Accelerate
@@ -137,17 +139,11 @@ struct SeasonStatsView: View {
                             Text("\(seasonStatData.totalAltitudeDescent, specifier: "%.2f")")
                                 .bold()
                                 .foregroundColor(Color.blue)
-                            Text("Altitude Descent (m)")
+                            Text("Vertical Descent (m)")
                         }.padding(insets)
                     }
 
                     GroupBox("Amount of Runs - Last Five Months"){
-//                        Chart(runCountArray){
-//                            BarMark(
-//                                x: .value("Week Day", $0.weekday, unit: .day),
-//                                y: .value("Run Count", $0.runs)
-//                            )
-                        
                         Chart {
                             ForEach(runData) { runs in
                                 BarMark(
@@ -164,31 +160,11 @@ struct SeasonStatsView: View {
                         .chartYAxis{
                             AxisMarks(position: .leading)
                         }
-//                        .chartXAxis{
-//                            AxisMarks (values: .stride (by: .day)) { value in
-//                                AxisGridLine().foregroundStyle(.orange)
-//                                AxisValueLabel(format: .dateTime.weekday(),
-//                                               centered: true)
-//                            }
-//                        }
                         
                     }.groupBoxStyle(ColoredGroupBox())
                         .padding()
                     
                 } // end group 2
-                
-                
-//                .navigationBarTitleDisplayMode(.inline)
-//                .toolbar{
-//                    ToolbarItem(placement: .principal){
-//                        HStack{
-//                            Image(systemName: "star")
-//                            Text("Season Stats")
-//                                .bold()
-//                        }
-//
-//                    }
-//                }
             }
         }
     }
@@ -214,6 +190,7 @@ struct ColoredGroupBox: GroupBoxStyle {
     }
 }
 
+// Struct that can contains all data displayed on page
 struct SeasonStatData: Identifiable{
     let id = UUID()
     let amountOfRuns: Int
@@ -232,6 +209,7 @@ struct SeasonStatData: Identifiable{
     
 }
 
+// Sets all data to a SeasonStats Struct
 func SetSeasonStatsData(items: FetchedResults<Item>) -> SeasonStatData {
     var maxSpeedArray: [Double] = []
     var averageSpeedArray: [Double] = []
@@ -275,7 +253,6 @@ func MakeRunCountArray(items: FetchedResults<Item>) -> [RunCount]{
         if item.timestamp! > oneWeekAgo {
             let dayComponents = calendar.dateComponents([.year, .month, .day], from: item.timestamp!)
                 countsByDay["\(String(describing: dayComponents.year!))0\(String(describing: dayComponents.month!))\(String(describing: dayComponents.day!))", default: 0] += 1
-           
         }
     }
     print(countsByDay)
@@ -283,8 +260,6 @@ func MakeRunCountArray(items: FetchedResults<Item>) -> [RunCount]{
         array.append(RunCount(day: dayComponents, runs: count))
 
     }
-
-    
     return array
 }
 
@@ -311,6 +286,7 @@ struct RunCount: Identifiable {
     }
 }
 
+// Struct for bar chart
 struct RunsPerMonth: Identifiable {
     var id = UUID()
     var month: String

@@ -4,6 +4,8 @@
 //
 //  Created by Joachim Mjelde on 3/3/23.
 //
+// View for data that has been collected but not saved
+//
 
 import SwiftUI
 import Charts
@@ -34,13 +36,9 @@ struct CurrentDataView: View {
         let motionY = makeArrays(time_arr: speedAndMotionData.motionTimeArray, y_arr: speedAndMotionData.motionYArray)
         let motionTime = makeDoubleArrayToStringArray(arr: speedAndMotionData.motionTimeArray)
         let currInsets = EdgeInsets(top: 1, leading: 1, bottom: 1, trailing: 1)
-        //        let motionY_Yvalues = makeArrayFromMotionArray(arr: motionY)
-//        let _ = displayData(items: items)
-        
-        
+
         NavigationView{
             ScrollView{
-//               Text("")
                 HStack{
                     Text("Ski Type Prediction: ")
                         .bold()
@@ -50,7 +48,6 @@ struct CurrentDataView: View {
                         .bold()
                         .foregroundColor(.blue)
                         .font(.title3)
-                        
                 }.padding(.top, 30)
                 Divider()
                     .frame(width: UIScreen.main.bounds.width - 40, height: 4)
@@ -70,7 +67,7 @@ struct CurrentDataView: View {
                         Text("Average Speed (km/h)")
                     }.padding()
                 }.padding(.bottom, 20)
-//                
+               
                 Divider()
                     .frame(width: UIScreen.main.bounds.width - 40, height: 4)
                     .overlay(.red)
@@ -110,18 +107,9 @@ struct CurrentDataView: View {
                 }.padding(.bottom, 5)
                
                 Spacer()
-//                GroupBox{
                     MapView(latitudeArray: speedAndMotionData.latitudeArray, longitudeArray: speedAndMotionData.longitudeArray)
                         .cornerRadius(20)
-//                        .padding()
                         .frame(width: 380, height: 270, alignment: .bottom)
-        
-                    
-//                }
-//                        .groupBoxStyle(CurrentDataGroupBox())
-//                    .padding(currInsets)
-               
-                
             }
             .navigationTitle("Your Run - Summary")
             .toolbar{
@@ -161,6 +149,7 @@ struct CurrentDataView: View {
             }
         }
     
+//    Saves all data collected from current run
     private func addItem(name: String) {
         withAnimation {
             let newItem = Item(context: viewContext)
@@ -170,7 +159,6 @@ struct CurrentDataView: View {
             newItem.speedArray = speedAndMotionData.speedArray
             newItem.speedTimeArray = speedAndMotionData.speedTimeArray
             newItem.averageSpeed = speedAndMotionData.averageSpeed
-//            newItem.locationCoordinates = speedAndMotionData.locationCoordinates
             newItem.altitudeDifference = speedAndMotionData.altitudeDifference
             newItem.longitudeArray = speedAndMotionData.longitudeArray
             newItem.latitudeArray = speedAndMotionData.latitudeArray
@@ -191,8 +179,6 @@ struct CurrentDataView: View {
                 try viewContext.save()
                 
             } catch {
-                // Replace this implementation with code to handle the error appropriately.
-                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
                 let nsError = error as NSError
                 fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
             }
@@ -205,7 +191,6 @@ func makeArrays(time_arr: [Double], y_arr: [Double]) -> [Motion]{
     var array: [Motion] = []
     
     for i in 0...time_arr.count-1{
-//        print("time arr \(time_arr[i]), y_arr \(y_arr[i])")
         array.append(Motion(x_value: time_arr[i], y_value: y_arr[i]))
     }
     return array
@@ -240,10 +225,7 @@ struct CurrentDataGroupBox: GroupBoxStyle {
         }
         .padding()
         .background(RoundedRectangle(cornerRadius: 8, style: .continuous)
-            .fill(.gray.opacity(0.3))) // Set your color here!!
-//        .overlay(RoundedRectangle(cornerRadius: 10)
-//            .stroke(.red, lineWidth: 2))
-        
+            .fill(.gray.opacity(0.3)))
     }
 }
 

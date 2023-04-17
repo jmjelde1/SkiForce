@@ -4,6 +4,8 @@
 //
 //  Created by Joachim Mjelde on 3/3/23.
 //
+// View for recording new run
+//
 
 import SwiftUI
 import CoreLocation
@@ -39,14 +41,9 @@ struct RecordView: View {
                 Text(buttonTapped ? "Stop Recording" : "Press to record")
                     .bold()
                     .foregroundColor(Color.white)
-                    
-//                Text((locationDataManager.locationManager.location?.speed.description ?? "-2"))
-               
             }
             .sheet(isPresented: $buttonTappedTwice){
-            
                 CurrentDataView(buttonTappedTwice: $buttonTappedTwice, speedAndMotionData:  getSpeedAndMotionData(locationDataManager))
-                
             }
             .frame(width: 200, height: 200)
             .background(buttonTapped ? Color.red : Color.blue)
@@ -64,6 +61,7 @@ struct RecordView_Previews: PreviewProvider {
     }
 }
 
+//Struct containing all data passed between views
 struct SpeedAndMotionData: Identifiable {
     let id = UUID()
     let speedArray: [Double]
@@ -87,9 +85,9 @@ struct SpeedAndMotionData: Identifiable {
     let skiType: String
 }
 
+// Gets all data collected in LocationDataManager class
+// returns SpeedAndMotion struct containing all data
 func getSpeedAndMotionData(_ locationManager: LocationDataManager) -> SpeedAndMotionData{
-
-
     let speedAndMotion = SpeedAndMotionData(speedArray: locationManager.speeds, speedTimeArray: locationManager.speedTime, altitudeDifference: locationManager.altitudeDifference, averageSpeed: locationManager.averageSpeed, maxSpeed: locationManager.maxSpeed, latitudeArray: locationManager.latitudeArray, longitudeArray: locationManager.longitudeArray, minAltitude: locationManager.minAltitude, maxAltitude: locationManager.maxAltitude, motionYArray: locationManager.motionY, motionArray: locationManager.motion, motionTimeArray: locationManager.motionTime, maxGForce: locationManager.maxGForce, turns: locationManager.turns, longestAirtime: locationManager.longestAirtime, sumAirtime: locationManager.sumAirtime, numOfJumps: locationManager.numOfJumps, skiType: locationManager.skiType)
     
     locationManager.clearAllData()

@@ -4,6 +4,8 @@
 //
 //  Created by Joachim Mjelde on 3/14/23.
 //
+// MapView that draws a line of where you skied
+//
 
 import SwiftUI
 import CoreLocation

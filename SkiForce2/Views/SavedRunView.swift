@@ -4,6 +4,8 @@
 //
 //  Created by Joachim Mjelde on 3/5/23.
 //
+// View for run chosen from list of saved runs
+//
 
 import SwiftUI
 import Charts
@@ -341,7 +343,7 @@ struct StatsView: View {
 
 
 
-
+// Struct for graphing speed
 struct Speed: Identifiable {
     let id = UUID()
     let x_value: String
@@ -353,6 +355,7 @@ struct Speed: Identifiable {
     }
 }
 
+// Struct for graphing accelerometer data
 struct Motion: Identifiable {
     let id = UUID()
     let x_value: Double
@@ -363,7 +366,6 @@ struct Motion: Identifiable {
         self.y_value = y_value
     }
 }
-
 
 
 func makeSpeedArray(model: Item) -> [Speed]{
@@ -400,19 +402,10 @@ func makeMotionYArray(model: Item) -> [Motion]{
 }
 
 func makeArrayFromMotionArray(arr: [Speed]) -> [Double]{
-    
     var new_arr: [Double] = []
-    
-//    if xValue{
-//        for value in arr{
-//            new_arr.append(value.x_value)
-//        }
-        
-//    } else {
         for value in arr{
             new_arr.append(value.y_value)
         }
-//    }
     return new_arr
 }
 

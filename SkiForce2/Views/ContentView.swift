@@ -9,6 +9,7 @@ import SwiftUI
 import CoreData
 import Charts
 
+// Main view that controls the tab bar
 struct ContentView: View {
     var body: some View {
         TabView() {

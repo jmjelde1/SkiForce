@@ -4,6 +4,8 @@
 //
 //  Created by Joachim Mjelde on 3/3/23.
 //
+// Class for all data collection from accelerometer and GPS as well as SKi Type Prediction
+//
 
 
 import Foundation
@@ -56,7 +58,7 @@ class LocationDataManager : NSObject, ObservableObject, CLLocationManagerDelegat
     }
     
     
-    
+//    Gets and saves GPS data
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         // Insert code to handle location updates
         guard let first = locations.first else {
@@ -85,11 +87,13 @@ class LocationDataManager : NSObject, ObservableObject, CLLocationManagerDelegat
         print("error: \(error.localizedDescription)")
     }
     
+//    Starts updating location
     func startUpdatingSpeed(){
         locationManager.startUpdatingLocation()
         startUpdatingMotion()
     }
     
+//    Stops GPS and Accelerometer
     func stopUpdatingSpeedAndMotion() {
         locationManager.stopUpdatingLocation()
         motionManager.stopAccelerometerUpdates()
@@ -113,15 +117,17 @@ class LocationDataManager : NSObject, ObservableObject, CLLocationManagerDelegat
         motionY = motionY.dropLast(80)
         motionTime = motionTime.dropLast(80)
         
-//      if mottion is large enough
+//      Not enough data pass to ML model
         if (motion.count < 128){
             skiType = "Not enough data to decide ski type"
         }else{
-//        Convert motion into an array Fourier Tranform can take
+            // Convert motion into an array Fourier Tranform can take
             let floats = Array(motion.suffix(128)).map{ Float($0) }
-//        fast fourier transform
+
+            // Fast fourier transform
             let transformedData = FourierTransform().Transform(signal: floats)
-//            make prediction
+
+            // Make prediction
             let prediction = PredictSkiType(data: transformedData)
             if prediction == "sl" {
                 skiType = "Slalom"
@@ -130,14 +136,13 @@ class LocationDataManager : NSObject, ObservableObject, CLLocationManagerDelegat
             }
         }
 
-        
-        
         let airtimes = airtime(motionY: motionY, motionTime: motionTime)
         longestAirtime = airtimes.max() ?? 0
         sumAirtime = airtimes.reduce(0, +)
         numOfJumps = Int16(airtimes.count)
     }
     
+//    Clears all data after it has been saved
     func clearAllData() {
         
         altitudeDifference = 0
@@ -164,6 +169,7 @@ class LocationDataManager : NSObject, ObservableObject, CLLocationManagerDelegat
         skiType = ""
     }
     
+//    Starts updating accelerometer data and saves data collected
     func startUpdatingMotion(){
         motionManager.accelerometerUpdateInterval = 0.1
         motionManager.startAccelerometerUpdates(to: OperationQueue.current!){ (data, error) in
@@ -186,6 +192,10 @@ class LocationDataManager : NSObject, ObservableObject, CLLocationManagerDelegat
         
     }
     
+//    Returns how many turns given accelerometer data
+//    dist: time between two points deciding slope
+//    stepSize: stride in loop. Decides how many datapoints are skipped
+//    between each two points to determine slope
     func NumOfTurns(dist : Int, stepSize : Int) -> Int16{
         var slopeIsPositive = true
         var currentX = 0.0
@@ -208,6 +218,7 @@ class LocationDataManager : NSObject, ObservableObject, CLLocationManagerDelegat
         return Int16(turns)
     }
     
+//    Returns how long user was in air based on accelerometer data
     func airtime(motionY: [Double], motionTime: [Double]) -> [Double] {
         var airtime: [Double] = []
         var inAir = false
@@ -229,10 +240,10 @@ class LocationDataManager : NSObject, ObservableObject, CLLocationManagerDelegat
                 airtime.append(stopTime-startTime)
             }
         }
-        
         return airtime
     }
     
+//    Puts data into ML model and returns prediction from model based on inputted data
     func PredictSkiType(data: [Double]) -> String{
         do {
             let config = MLModelConfiguration()
